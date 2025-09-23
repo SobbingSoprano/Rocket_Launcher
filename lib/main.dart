@@ -44,27 +44,29 @@ class _CounterWidgetState extends State<CounterWidget> {
         _numberColor = Colors.orange;
       }
       if (_counter == 100) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Lift Off!'),
-              content: const Text('The rocket has launched!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    });
-  }
-
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('🚀 Lift Off!'),
+            content: const Text(
+              'The rocket has launched successfully!\n\n🎉 Mission Accomplished 🎉',
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  });
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
