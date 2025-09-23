@@ -25,6 +25,46 @@ class CounterWidget extends StatefulWidget {
 class _CounterWidgetState extends State<CounterWidget> {
   //set counter value
   int _counter = 0;
+  Color _numberColor = Colors.blue;
+
+  void _increaseCounter(int value) {
+    setState(() {
+      _counter = value;
+      if (_counter < 0) {
+        _counter = 0;
+      } else if (_counter > 100) {
+        _counter = 100;
+      }
+
+      if (_counter == 0) {
+        _numberColor = Colors.red;
+      } else if (_counter >= 50) {
+        _numberColor = Colors.green;
+      } else {
+        _numberColor = Colors.orange;
+      }
+      if (_counter == 100) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Lift Off!'),
+              content: const Text('The rocket has launched!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +75,7 @@ class _CounterWidgetState extends State<CounterWidget> {
         children: [
           Center(
             child: Container(
-              color: Colors.blue,
+              color: _numberColor,
               child: Text(
                 //to displays current number
                 '$_counter',
@@ -48,9 +88,7 @@ class _CounterWidgetState extends State<CounterWidget> {
             max: 100,
             value: _counter.toDouble(),
             onChanged: (double value) {
-              setState(() {
-                _counter = value.toInt();
-              });
+              _increaseCounter(value.toInt());
             },
             activeColor: Colors.blue,
             inactiveColor: Colors.red,
@@ -60,28 +98,25 @@ class _CounterWidgetState extends State<CounterWidget> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  setState(() {
-                    if (_counter > 0) _counter--;
-                  });
+                  _increaseCounter(_counter - 1);
                 },
                 child: const Text('Abort'),
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red[300],
+                ),
                 onPressed: () {
-                  setState(() {
-                    if (_counter < 100) _counter++;
-                  });
+                  _increaseCounter(0);
+                },
+                child: const Text('Reset'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _increaseCounter(_counter + 1);
                 },
                 child: const Text('Ignite'),
               ),
-                ElevatedButton(
-                    onPressed: () {
-                    setState(() {
-                        _counter = 0;
-                    });
-                    },
-                    child: const Text('Reset'),
-                ),
             ],
           ),
         ],
